@@ -12,16 +12,13 @@ import org.springframework.stereotype.Component;
 public class CustomerService {
 
     private CustomerRepository customerRepository;
-    private ApplicationEventPublisher applicationEventPublisher;
 
     public CustomerService(CustomerRepository customerRepository,ApplicationEventPublisher applicationEventPublisher) {
         this.customerRepository = customerRepository;
-        this.applicationEventPublisher = applicationEventPublisher;
     }
 
     public void createCustomer(Customer customer) {
-        customerRepository.save(customer);
-        applicationEventPublisher.publishEvent(new CustomerCreated(customer));
+        customerRepository.save(customer.save());
     }
 
     public List<Customer> findAll() {

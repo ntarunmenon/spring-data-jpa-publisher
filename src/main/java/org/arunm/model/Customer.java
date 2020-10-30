@@ -5,8 +5,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.arunm.CustomerCreated;
+import org.springframework.data.domain.AbstractAggregateRoot;
+
 @Entity
-public class Customer {
+public class Customer extends AbstractAggregateRoot<Customer> {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -19,6 +22,11 @@ public class Customer {
     public Customer(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+
+    public Customer save() {
+        registerEvent(new CustomerCreated(this));
+        return this;
     }
 
     @Override
